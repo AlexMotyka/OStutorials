@@ -13,7 +13,7 @@ int main(void)
     //go through the file and extract the numbers
     for (i = 0; i < 10; i++)
     {
-        fscanf(myFile, "%1d", &numberArray[i]);
+        fscanf(myFile, "%d", &numberArray[i]);
     }
 
     //print the contents to the terminal

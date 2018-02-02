@@ -3,7 +3,7 @@
 int main(){
   char fname[20];
   int age;
-  int height;
+  float height;
 
   printf ("Enter your first name: ");
   scanf("%s", fname);
@@ -12,8 +12,8 @@ int main(){
   scanf("%d", &age);
 
   printf("Enter your height: ");
-  scanf("%d", &height);
+  scanf("%f", &height);
 
-  printf("\nYou entered:\nFirst name: %s\nAge: %d\nHeight: %d\n", fname, age, height);
+  printf("\nYou entered:\nFirst name: %s\nAge: %d\nHeight: %f\n", fname, age, height);
   return 0;
 }

@@ -17,7 +17,7 @@ int main() {
   scanf("%d", &student.id);
   printf ("Enter your age: ");
   scanf("%d", &student.age);
-  printf ("Enter your student year: ");
+  printf ("Enter the year you started at UOIT: ");
   scanf("%d", &student.year);
 
   save_student(&student);

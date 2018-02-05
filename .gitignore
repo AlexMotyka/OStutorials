@@ -1,3 +1,7 @@
 a.out
-students.txt
-grades.txt
+*.o
+
+TUT3/students.txt
+TUT3/grades.txt
+
+TUT4/jeopardy.exe

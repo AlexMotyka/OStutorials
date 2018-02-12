@@ -81,7 +81,7 @@ void initialize_game(void)
 void display_categories(void)
 {
   // print categories and dollar values for each unanswered question in questions array
-  printf("\n");
+  printf(ANSI_COLOR_BLUE "\n\n==============\n" ANSI_COLOR_RESET);
   for (int i = 0; i < 3; i++) {
     printf(ANSI_COLOR_MAGENTA "%s\n" ANSI_COLOR_RESET, categories[i]);
     int c = 0;
@@ -99,7 +99,7 @@ void display_categories(void)
       c++;
     }
   }
-  printf("\n");
+  printf(ANSI_COLOR_BLUE "==============\n\n" ANSI_COLOR_RESET);
 }
 
 // Displays the question for the category and dollar value
@@ -135,4 +135,5 @@ bool already_answered(char *category, int value)
       return questions[i].answered;
     }
   }
+  return false;
 }

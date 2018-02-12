@@ -35,7 +35,6 @@ void show_results(struct player *players, int num_players);
 
 int game_state;
 
-
 int main(int argc, char *argv[])
 {
     // An array of 4 players, may need to be a pointer if you want it set dynamically
@@ -63,16 +62,23 @@ int main(int argc, char *argv[])
     {
         display_categories();
 
-        char entered_player[255];
-        printf("Enter a player name to answer this question: ");
-        scanf("%s", &entered_player);
-        while(!player_exists(players, 4, entered_player)){
-          printf(ANSI_COLOR_RED "Player %s not exist.\n" ANSI_COLOR_RESET, entered_player);
+        // Select player and check exist
+        char entered_player[256];
+        bool exists = false;
+        do {
           printf("Enter a player name to answer this question: ");
           scanf("%s", &entered_player);
+          if (!player_exists(players, 4, entered_player)){
+            printf(ANSI_COLOR_RED "Player %s not exist.\n" ANSI_COLOR_RESET, entered_player);
+          }
+          else {
+            exists = true;
+          }
         }
+        while (exists == false);
 
-        char entered_category[255];
+        // Select category and value, check exist, check already_answered
+        char entered_category[256];
         int entered_value;
         bool found = false;
         do {
@@ -80,34 +86,31 @@ int main(int argc, char *argv[])
           scanf("%s", &entered_category);
           printf("Enter a value: ");
           scanf("%d", &entered_value);
-
           for(int i = 0; i < 12; i++) {
             if (strcmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
               found = true;
             }
           }
-
           if (found == false) {
             printf(ANSI_COLOR_RED "Question not found! Try again!\n" ANSI_COLOR_RESET);
+          }
+          else if (already_answered(entered_category, entered_value)) {
+            printf(ANSI_COLOR_RED "This question is already been answered\n" ANSI_COLOR_RESET);
+            found = false;
           }
         }
         while (found == false);
 
-        while (already_answered(entered_category, entered_value)){
-          printf(ANSI_COLOR_RED "This question is already been answered\n" ANSI_COLOR_RESET);
-          printf("Enter a category: ");
-          scanf("%s", &entered_category);
-          printf("Enter a value: ");
-          scanf("%d", &entered_value);
-        }
-
+        // show question
         display_question(entered_category, entered_value);
 
+        // enter answer
         char entered_answer[255];
         printf("Enter your answer: ");
         getchar();
         fgets(entered_answer, 255, stdin);
 
+        // tokenize and check for what is or who is
         char *token;
         token = strtok(entered_answer, " ");
         if (strcmp(token, "what") == 0 || strcmp(token, "who") == 0) {
@@ -125,11 +128,13 @@ int main(int argc, char *argv[])
           }
         }
 
+        // if correct
         if (valid_answer(entered_category, entered_value, token)) {
           printf(ANSI_COLOR_GREEN "\n== Correct! ==\n" ANSI_COLOR_RESET);
           update_score(players, 4, entered_player, entered_value);
-          printf(ANSI_COLOR_GREEN "== Add $%d to %s==\n" ANSI_COLOR_RESET, entered_value, entered_player);
+          printf(ANSI_COLOR_GREEN "== Add $%d to %s ==\n" ANSI_COLOR_RESET, entered_value, entered_player);
         }
+        // if wrong
         else {
           printf(ANSI_COLOR_YELLOW "\n== Wrong! ==\n" ANSI_COLOR_RESET);
           for(int i = 0; i < 12; i++) {
@@ -139,12 +144,14 @@ int main(int argc, char *argv[])
             }
           }
 
+          // mark question as answered
           for(int i = 0; i < 12; i++) {
             if (strcmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
                 questions[i].answered = true;
               }
             }
 
+          // check if all questions are answered
           bool all_answered = true;
           for(int i = 0; i < 12; i++) {
             if (!questions[i].answered) {
@@ -152,17 +159,16 @@ int main(int argc, char *argv[])
               }
             }
 
+          // If all answered
           if (all_answered) {
+            // Show results
             show_results(players, 4);
-            return EXIT_SUCCESS;
+            // End game
+            game_state = 0;
           }
 
-        // Call functions from the questions and players source files
-
-        // Execute the game until all questions are answered
-
-        // Display the final results and exit
     }
+    return EXIT_SUCCESS;
 }
 
 
@@ -221,11 +227,11 @@ void show_results(struct player *players, int num_players) {
     }
   }
 
-printf(ANSI_COLOR_BLUE "\n== Leaderboard ==\n" ANSI_COLOR_RESET);
+printf(ANSI_COLOR_BLUE "\n=================\n== Leaderboard ==\n=================\n" ANSI_COLOR_RESET);
 printf(ANSI_COLOR_MAGENTA "%s: $%d\n" ANSI_COLOR_RESET, players[f].name, players[f].score);
-printf(ANSI_COLOR_CYAN "%s: $%d\n" ANSI_COLOR_RESET, players[s].name, players[s].score);
+printf(ANSI_COLOR_MAGENTA "%s: $%d\n" ANSI_COLOR_RESET, players[s].name, players[s].score);
 printf(ANSI_COLOR_MAGENTA "%s: $%d\n" ANSI_COLOR_RESET, players[t].name, players[t].score);
-printf(ANSI_COLOR_CYAN "%s: $%d\n" ANSI_COLOR_RESET, players[l].name, players[l].score);
+printf(ANSI_COLOR_MAGENTA "%s: $%d\n" ANSI_COLOR_RESET, players[l].name, players[l].score);
 if (tie == 0) {
   printf(ANSI_COLOR_BLUE "\n== Winner is %s! ==\n" ANSI_COLOR_RESET, players[f].name);
 }

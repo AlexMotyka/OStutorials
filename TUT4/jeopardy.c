@@ -63,7 +63,7 @@ int main(void)
           printf("Enter a player name to answer this question: ");
           scanf("%s", entered_player);
           if (!player_exists(players, 4, entered_player)){
-            printf(ANSI_COLOR_RED "Player %s not exist.\n" ANSI_COLOR_RESET, entered_player);
+            printf(ANSI_COLOR_RED "Player %s not exist!\n" ANSI_COLOR_RESET, entered_player);
           }
           else {
             exists = true;
@@ -79,18 +79,18 @@ int main(void)
         do {
           printf("Enter a category: ");
           scanf("%s", entered_category);
-          printf("Enter a value: ");
+          printf("Enter a dollar amount: $");
           scanf("%s", entered_value_str);
           // check value if entered_value is int
           if (isdigit(entered_value_str[0])) {
             entered_value = atoi(entered_value_str);
           }
           else {
-            printf(ANSI_COLOR_RED "Please enter a number for value.\n" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_RED "Please enter a number for dollar amount!\n" ANSI_COLOR_RESET);
           }
           // check exist
           for(int i = 0; i < 12; i++) {
-            if (strcmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
+            if (strcasecmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
               found = true;
             }
           }
@@ -99,7 +99,7 @@ int main(void)
           }
           // check already_answered
           else if (already_answered(entered_category, entered_value)) {
-            printf(ANSI_COLOR_RED "This question is already been answered\n" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_RED "This question is already been answered!\n" ANSI_COLOR_RESET);
             found = false;
           }
         }
@@ -117,11 +117,11 @@ int main(void)
         // tokenize and check for what is or who is
         char *token;
         token = strtok(entered_answer, " ");
-        if (strcmp(token, "what") == 0 || strcmp(token, "who") == 0) {
+        if (strcasecmp(token, "what") == 0 || strcasecmp(token, "who") == 0) {
           // printf("first is correct\n");
           token = strtok(NULL, " ");
           if (token != NULL) {
-            if (strcmp(token, "is") == 0) {
+            if (strcasecmp(token, "is") == 0) {
               // printf("second is correct\n");
               token = strtok(NULL, " ");
               if (token != NULL) {
@@ -142,7 +142,7 @@ int main(void)
         else {
           printf(ANSI_COLOR_YELLOW "\n== Incorrect! ==\n" ANSI_COLOR_RESET);
           for(int i = 0; i < 12; i++) {
-            if (strcmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
+            if (strcasecmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
                 printf(ANSI_COLOR_YELLOW "== Correct answer: what is %s ==\n" ANSI_COLOR_RESET, questions[i].answer);
               }
             }
@@ -150,7 +150,7 @@ int main(void)
 
           // mark question as answered
           for(int i = 0; i < 12; i++) {
-            if (strcmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
+            if (strcasecmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
                 questions[i].answered = true;
               }
             }
@@ -249,5 +249,6 @@ if (tie == 2) {
 if (tie == 3) {
   printf(ANSI_COLOR_MAGENTA " - %s\n - %s\n - %s\n - %s\n" ANSI_COLOR_RESET, players[f].name, players[s].name, players[t].name, players[l].name);
 }
+printf("\n");
 
 }

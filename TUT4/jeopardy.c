@@ -140,7 +140,7 @@ int main(void)
         }
         // if wrong
         else {
-          printf(ANSI_COLOR_YELLOW "\n== Wrong! ==\n" ANSI_COLOR_RESET);
+          printf(ANSI_COLOR_YELLOW "\n== Incorrect! ==\n" ANSI_COLOR_RESET);
           for(int i = 0; i < 12; i++) {
             if (strcmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
                 printf(ANSI_COLOR_YELLOW "== Correct answer: what is %s ==\n" ANSI_COLOR_RESET, questions[i].answer);

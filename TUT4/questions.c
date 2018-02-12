@@ -73,6 +73,7 @@ void initialize_game(void)
 void display_categories(void)
 {
   // print categories and dollar values for each unanswered question in questions array
+  printf("\n");
   for (int i = 0; i < 3; i++) {
     printf("%s\n", categories[i]);
     int c = 0;
@@ -84,41 +85,35 @@ void display_categories(void)
       if (questions[c].answered == 0) {
         printf("  - %d\n", questions[c].value);
       }
+      else {
+        printf("  - %s\n", "Answered");
+      }
       c++;
     }
   }
+  printf("\n");
 }
 
 // Displays the question for the category and dollar value
 void display_question(char *category, int value)
 {
-  bool found = false;
   for(int i = 0; i < 12; i++) {
     if (strcmp(questions[i].category, category) == 0 && questions[i].value == value) {
-      found = true;
-      printf("<%s, $%d>\n", category, value);
+      printf("\n== %s ==\n== $%d ==\n", category, value);
       printf("Question: %s\n", questions[i].question);
     }
-  }
-  if (found == false) {
-    printf("Question not found!\n");
   }
 }
 
 // Returns true if the answer is correct for the question for that category and dollar value
 bool valid_answer(char *category, int value, char *answer)
 {
-  bool found = false;
   for(int i = 0; i < 12; i++) {
     if (strcmp(questions[i].category, category) == 0 && questions[i].value == value) {
-      found = true;
       if (strcasecmp(answer, questions[i].answer) == 0) {
         return true;
       }
     }
-  }
-  if (found == false) {
-    printf("Question not found!\n");
   }
   // Look into string comparison functions
   return false;
@@ -127,14 +122,9 @@ bool valid_answer(char *category, int value, char *answer)
 // Returns true if the question has already been answered
 bool already_answered(char *category, int value)
 {
-  bool found = false;
   for(int i = 0; i < 12; i++) {
     if (strcmp(questions[i].category, category) == 0 && questions[i].value == value) {
-      found = true;
       return questions[i].answered;
     }
-  }
-  if (found == false) {
-    printf("Question not found!\n");
   }
 }

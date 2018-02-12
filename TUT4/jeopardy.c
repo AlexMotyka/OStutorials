@@ -13,6 +13,14 @@
 #include "players.h"
 #include "jeopardy.h"
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 // Put macros or constants here using #define
 #define BUFFER_LEN 256
 #define NUM_PLAYERS 4
@@ -36,6 +44,8 @@ int main(int argc, char *argv[])
     // Buffer for user input
     char buffer[BUFFER_LEN] = { 0 };
 
+    system("clear");
+
     // Display the game introduction and initialize the questions
     initialize_game();
 
@@ -54,11 +64,11 @@ int main(int argc, char *argv[])
         display_categories();
 
         char entered_player[255];
-        printf("Enter a player name to answer this question: \n");
+        printf("Enter a player name to answer this question: ");
         scanf("%s", &entered_player);
         while(!player_exists(players, 4, entered_player)){
-          printf("Player %s not exist.\n", entered_player);
-          printf("Enter a player name to answer this question: \n");
+          printf(ANSI_COLOR_RED "Player %s not exist.\n" ANSI_COLOR_RESET, entered_player);
+          printf("Enter a player name to answer this question: ");
           scanf("%s", &entered_player);
         }
 
@@ -66,9 +76,9 @@ int main(int argc, char *argv[])
         int entered_value;
         bool found = false;
         do {
-          printf("Enter a category: \n");
+          printf("Enter a category: ");
           scanf("%s", &entered_category);
-          printf("Enter a value: \n");
+          printf("Enter a value: ");
           scanf("%d", &entered_value);
 
           for(int i = 0; i < 12; i++) {
@@ -78,16 +88,16 @@ int main(int argc, char *argv[])
           }
 
           if (found == false) {
-            printf("Question not found! Try again!\n");
+            printf(ANSI_COLOR_RED "Question not found! Try again!\n" ANSI_COLOR_RESET);
           }
         }
         while (found == false);
 
         while (already_answered(entered_category, entered_value)){
-          printf("This question is already been answered\n");
-          printf("Enter a category: \n");
+          printf(ANSI_COLOR_RED "This question is already been answered\n" ANSI_COLOR_RESET);
+          printf("Enter a category: ");
           scanf("%s", &entered_category);
-          printf("Enter a value: \n");
+          printf("Enter a value: ");
           scanf("%d", &entered_value);
         }
 
@@ -116,15 +126,15 @@ int main(int argc, char *argv[])
         }
 
         if (valid_answer(entered_category, entered_value, token)) {
-          printf("\n== Correct! ==\n");
+          printf(ANSI_COLOR_GREEN "\n== Correct! ==\n" ANSI_COLOR_RESET);
           update_score(players, 4, entered_player, entered_value);
-          printf("== Add $%d to %s==\n", entered_value, entered_player);
+          printf(ANSI_COLOR_GREEN "== Add $%d to %s==\n" ANSI_COLOR_RESET, entered_value, entered_player);
         }
         else {
-          printf("\n== Wrong! ==\n");
+          printf(ANSI_COLOR_YELLOW "\n== Wrong! ==\n" ANSI_COLOR_RESET);
           for(int i = 0; i < 12; i++) {
             if (strcmp(questions[i].category, entered_category) == 0 && questions[i].value == entered_value) {
-                printf("== Correct answer: what is %s ==\n", questions[i].answer);
+                printf(ANSI_COLOR_YELLOW "== Correct answer: what is %s ==\n" ANSI_COLOR_RESET, questions[i].answer);
               }
             }
           }
@@ -211,22 +221,22 @@ void show_results(struct player *players, int num_players) {
     }
   }
 
-printf("\n== Leaderboard ==\n");
-printf("%s: $%d\n", players[f].name, players[f].score);
-printf("%s: $%d\n", players[s].name, players[s].score);
-printf("%s: $%d\n", players[t].name, players[t].score);
-printf("%s: $%d\n", players[l].name, players[l].score);
+printf(ANSI_COLOR_BLUE "\n== Leaderboard ==\n" ANSI_COLOR_RESET);
+printf(ANSI_COLOR_MAGENTA "%s: $%d\n" ANSI_COLOR_RESET, players[f].name, players[f].score);
+printf(ANSI_COLOR_CYAN "%s: $%d\n" ANSI_COLOR_RESET, players[s].name, players[s].score);
+printf(ANSI_COLOR_MAGENTA "%s: $%d\n" ANSI_COLOR_RESET, players[t].name, players[t].score);
+printf(ANSI_COLOR_CYAN "%s: $%d\n" ANSI_COLOR_RESET, players[l].name, players[l].score);
 if (tie == 0) {
-  printf("\n== Winner is %s! ==\n", players[f].name);
+  printf(ANSI_COLOR_BLUE "\n== Winner is %s! ==\n" ANSI_COLOR_RESET, players[f].name);
 }
 if (tie == 1) {
-  printf("\n== Winner is %s, %s! ==\n", players[f].name, players[s].name);
+  printf(ANSI_COLOR_BLUE "\n== Winner is %s, %s! ==\n" ANSI_COLOR_RESET, players[f].name, players[s].name);
 }
 if (tie == 2) {
-  printf("\n== Winner is %s, %s, %s! ==\n", players[f].name, players[s].name, players[t].name);
+  printf(ANSI_COLOR_BLUE "\n== Winner is %s, %s, %s! ==\n" ANSI_COLOR_RESET, players[f].name, players[s].name, players[t].name);
 }
 if (tie == 3) {
-  printf("\n== Winner is %s, %s, %s, %s! ==\n", players[f].name, players[s].name, players[t].name, players[l].name);
+  printf(ANSI_COLOR_BLUE "\n== Winner is %s, %s, %s, %s! ==\n" ANSI_COLOR_RESET, players[f].name, players[s].name, players[t].name, players[l].name);
 }
 
 }

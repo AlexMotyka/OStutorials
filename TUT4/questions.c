@@ -10,6 +10,14 @@
 #include <string.h>
 #include "questions.h"
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 // Initializes the array of questions for the game
 void initialize_game(void)
 {
@@ -75,7 +83,7 @@ void display_categories(void)
   // print categories and dollar values for each unanswered question in questions array
   printf("\n");
   for (int i = 0; i < 3; i++) {
-    printf("%s\n", categories[i]);
+    printf(ANSI_COLOR_MAGENTA "%s\n" ANSI_COLOR_RESET, categories[i]);
     int c = 0;
     if (i == 0) {c = i;}
     if (i == 1) {c = i + 3;}
@@ -83,10 +91,10 @@ void display_categories(void)
 
     for (int j = 0; j < 4; j++) {
       if (questions[c].answered == 0) {
-        printf("  - %d\n", questions[c].value);
+        printf(ANSI_COLOR_CYAN "  - $%d\n" ANSI_COLOR_RESET, questions[c].value);
       }
       else {
-        printf("  - %s\n", "Answered");
+        printf(ANSI_COLOR_CYAN "  - %s\n" ANSI_COLOR_RESET, "Answered");
       }
       c++;
     }
@@ -99,8 +107,8 @@ void display_question(char *category, int value)
 {
   for(int i = 0; i < 12; i++) {
     if (strcmp(questions[i].category, category) == 0 && questions[i].value == value) {
-      printf("\n== %s ==\n== $%d ==\n", category, value);
-      printf("Question: %s\n", questions[i].question);
+      printf(ANSI_COLOR_BLUE "\n== %s ==\n== $%d ==\n" ANSI_COLOR_RESET, category, value);
+      printf(ANSI_COLOR_BLUE "Question: %s\n" ANSI_COLOR_RESET, questions[i].question);
     }
   }
 }

@@ -8,7 +8,7 @@
 
 void* bellcurve(void *arg) {
     double newMark = *(int*)arg * 1.50;
-    printf("Your new mark is: %f \n", newMark);
+    printf("Your original grade was: %d. Your new mark is: %f \n", *(int*)arg, newMark);
     return NULL;
 
 }

@@ -1,7 +1,8 @@
 a.out
 *.o
+*.exe
 
 TUT3/students.txt
 TUT3/grades.txt
 
-TUT4/jeopardy.exe
+TUT5/bellcurve.txt

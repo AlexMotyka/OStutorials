@@ -6,10 +6,9 @@
 
 
 
-void* bellcurve(int* grade) {
-    printf("Made it into bellcurve\n");
-    double newMark = *grade * 1.50;
-    printf("Your new mark is: %f \n", newMark);
+void* bellcurve(void *arg) {
+    double newMark = *(int*)arg * 1.50;
+    printf("Your original grade was: %d. Your new mark is: %f \n", *(int*)arg, newMark);
     return NULL;
 
 }
@@ -25,16 +24,11 @@ int main()
       scanf("%d", &grades[j]);
     }
 
-    printf("Got out.\n");
-
-    for (int i=0; i<num_students; i++){
-        printf("Trying to create\n");
-        pthread_create(&tid[i], NULL, bellcurve(&(grades[i])), NULL);
-        printf("Created\n");
+    for (int k=0; k<num_students; k++){
+        pthread_create(&tid[k], NULL, bellcurve, &grades[k]);
     }
 
     for (int i = 0; i < num_students; i++) {
-        printf("Joining");
         pthread_join(tid[i], NULL);
     }
 

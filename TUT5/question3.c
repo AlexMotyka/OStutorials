@@ -1,3 +1,6 @@
+/*wierd memory issues when there is more than 2 students for some reason. 
+Not sure why the C gods hate me */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>

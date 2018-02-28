@@ -3,6 +3,8 @@
 #include <math.h>
 #include<pthread.h>
 
+int  num_students;
+
 
 typedef struct {
   char name[20];
@@ -12,9 +14,12 @@ typedef struct {
 
 
 void* bellcurve(void *arg) {
+    
     student* data = (student*) arg;
-
-    printf("name is %s, mark is %d, id is %d \n", data->name, data->mark, data->student_id);
+    for (int j =0; j < num_students; j++) {
+      printf("Name is %s, id is %d, bellcurved grade is %f \n", data[j].name, data[j].student_id, (data[j].mark) *1.50);
+    }
+    
     
 
     return NULL;
@@ -25,7 +30,7 @@ int main()
 {
     pthread_t tid[5];
    
-    int num_students;
+    
     
     printf("Enter the number of students to mark: \n");
     scanf("%d", &num_students);
@@ -39,8 +44,6 @@ int main()
       scanf("%d", &grades[j].student_id);
       printf("Enter mark: \n");
       scanf("%d", &grades[j].mark);
-
-      printf("name is %s, mark is %d, id is %d \n", grades[j].name, grades[j].student_id, grades[j].mark);
     }
     
 

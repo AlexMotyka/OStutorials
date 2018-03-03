@@ -15,15 +15,22 @@ struct Data {
 void *factorial(void *threadarg){
     struct Data *my_data;
     my_data = (struct Data *) threadarg;
+    
     int n = my_data->num;
+    int spot = my_data->index;
     int factorial=1;
     int i;
+
     for(i=1; i<=n; ++i){
             factorial *= i;              
         }
         printf("Factorial of %d = %d\n", n, factorial);
-    //printf("%d\n", n);
-    //printf("Your data is %d, %d\n",my_data->index, my_data->num);
+    moving_sum[spot]=factorial;
+    while(moving_sum[spot-1]==0){
+        //try to change it by checking the semaphore lock
+        
+    }
+    
     return 0;
 }
 int main(void)

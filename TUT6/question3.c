@@ -7,6 +7,8 @@
 
 int moving_sum[5] = {0,0,0,0,0};
 
+sem_t can_add;
+
 struct Data {
     int num;
     int index;
@@ -18,17 +20,31 @@ void *factorial(void *threadarg){
     
     int n = my_data->num;
     int spot = my_data->index;
+
     int factorial=1;
     int i;
+    int previous = spot -1;
+    
 
     for(i=1; i<=n; ++i){
             factorial *= i;              
+    }
+    
+    if (spot == 0){
+        moving_sum[spot] = factorial;
+    }
+    
+    if(spot>0){
+        if (moving_sum[previous]!=0){
+            sem_wait(&can_add);
+            moving_sum[spot] = moving_sum[previous] + factorial;
+            sem_post(&can_add);
         }
-        printf("Factorial of %d = %d\n", n, factorial);
-    moving_sum[spot]=factorial;
-    while(moving_sum[spot-1]==0){
-        //try to change it by checking the semaphore lock
-        
+        while(moving_sum[previous]==0){
+            sem_wait(&can_add);
+            moving_sum[spot] = moving_sum[previous] + factorial;
+            sem_post(&can_add);
+        }
     }
     
     return 0;
@@ -36,6 +52,12 @@ void *factorial(void *threadarg){
 int main(void)
 {
     pthread_t tid[5];
+    
+    if(sem_init(&can_add, 0, 1))
+    {
+        printf("Could not initialize a semaphore\n");
+        return -1;
+    }
     
     struct Data *my_data = malloc(5);
     if(my_data==NULL)    
@@ -47,9 +69,16 @@ int main(void)
         my_data[j].index = j;
         pthread_create(&tid[j], NULL, factorial, &my_data[j]);
     }
-    for (int i = 0; i < 5; i++)
-        pthread_join(tid[i], NULL);
+    for (int i = 0; i < 5; i++){
+        if(pthread_join(tid[i], NULL)){
+            printf("Could not join thread %d\n",i);
+            return -1;
+        }
+    }
     
+    for (int k = 0; k < 5; k++){
+        printf("Element %d: %d\n",k,moving_sum[k]);
+    }
     //free(my_data);
     my_data = NULL;
     return 0;  

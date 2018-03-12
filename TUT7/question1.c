@@ -18,18 +18,19 @@ typedef struct proc{
     int runtime;
 }proc_t;
 
-//our node struct
-typedef struct node {
+//our queue struct
+typedef struct queue {
     struct proc * process;
-    struct node * next;
-} node_t;
+    struct queue * next;
+} queue_t;
 
 //intialize head to NULL
-node_t *head = NULL;
+queue_t *head = NULL;
 
-void print_list(node_t * head) {
+
+void print_list(queue_t * head) {
     //set pointer to the head
-    node_t * ptr = head;
+    queue_t * ptr = head;
 
     //move pointer through the list until we print the last element
     while (ptr != NULL) {
@@ -41,8 +42,8 @@ void print_list(node_t * head) {
 
 void push(proc_t * process) {
     //create a new link in the linked list
-    node_t * link = (node_t*) malloc(sizeof(node_t));
-    node_t * ptr = head;
+    queue_t * link = (queue_t*) malloc(sizeof(queue_t));
+    queue_t * ptr = head;
     
     //assign the process to the link
     link->process = process;
@@ -81,6 +82,7 @@ int main(){
 
         push(&myproc[i]);
     }
+    
     fclose(fp);
     print_list(head);
 

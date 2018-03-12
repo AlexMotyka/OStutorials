@@ -24,18 +24,20 @@ typedef struct queue {
     struct queue * next;
 } queue_t;
 
-//intialize head to NULL
+//intialize head and current to NULL
 queue_t *head = NULL;
+queue_t *current = NULL;
+
 
 
 void print_list(queue_t * head) {
-    //set pointer to the head
-    queue_t * ptr = head;
+    //set current to the head
+    queue_t * current = head;
 
-    //move pointer through the list until we print the last element
-    while (ptr != NULL) {
-        printf("Name: %s | Priority: %d | PID: %d | Runtime: %d\n", ptr->process->name, ptr->process->priority, ptr->process->pid, ptr->process->runtime);
-        ptr = ptr->next;
+    //move current through the list until we print the last element
+    while (current != NULL) {
+        printf("Name: %s | Priority: %d | PID: %d | Runtime: %d\n", current->process->name, current->process->priority, current->process->pid, current->process->runtime);
+        current = current->next;
     }
 }
 
@@ -43,15 +45,15 @@ void print_list(queue_t * head) {
 void push(proc_t * process) {
     //create a new link in the linked list
     queue_t * link = (queue_t*) malloc(sizeof(queue_t));
-    queue_t * ptr = head;
     
     //assign the process to the link
     link->process = process;
 
-    //point the new link to old first node
+
+    //make the link point to the current head
     link->next = head;
 
-    //link becomes the old head
+    //make the link the new head
     head = link;
     
 }
@@ -75,13 +77,12 @@ int main(){
 
         push(&myproc[i]);
     }
-    
     fclose(fp);
     print_list(head);
 
     free(myproc);
     myproc = NULL;
 
-    return 0;
+    return 1;
     
 }

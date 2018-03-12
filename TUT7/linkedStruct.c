@@ -27,7 +27,7 @@ void print_list(node_t * head) {
 
     //move current through the list until we print the last element
     while (current != NULL) {
-        printf("%d\n", current->process);
+        printf("Hello %s\n", current->process->name);
         current = current->next;
     }
 }
@@ -57,15 +57,17 @@ int main(){
 
     
 
+    
+
     strcpy(init[0].name, "bob");
     init[0].priority = 1;
     init[0].pid = 2;
     init[0].runtime = 3;
 
-    strcpy(init[0].name, "dave");
-    init[0].priority = 5;
-    init[0].pid = 3;
-    init[0].runtime = 7;
+    strcpy(second[0].name, "dave");
+    second[0].priority = 5;
+    second[0].pid = 3;
+    second[0].runtime = 7;
 
     push(init);
     push(second);

@@ -89,6 +89,6 @@ int main(){
     free(myproc);
     myproc = NULL;
 
-    return 1;
+    return 0;
     
 }

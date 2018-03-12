@@ -48,18 +48,11 @@ void push(proc_t * process) {
     //assign the process to the link
     link->process = process;
 
-    //navigate to the end of the list
-     while (ptr != NULL) {
-        ptr = ptr->next;
-    }
+    //point the new link to old first node
+    link->next = head;
 
-    //make the current last link point to the new link being added
-    ptr->next = link;
-
-    //make the link point to NULL since its at the end of the list
-    link->next = NULL;
-
-    
+    //link becomes the old head
+    head = link;
     
 }
 

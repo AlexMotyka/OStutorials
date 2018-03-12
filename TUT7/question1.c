@@ -24,20 +24,17 @@ typedef struct node {
     struct node * next;
 } node_t;
 
-//intialize head and current to NULL
+//intialize head to NULL
 node_t *head = NULL;
-node_t *current = NULL;
-
-
 
 void print_list(node_t * head) {
-    //set current to the head
-    node_t * current = head;
+    //set pointer to the head
+    node_t * ptr = head;
 
-    //move current through the list until we print the last element
-    while (current != NULL) {
-        printf("Name: %s | Priority: %d | PID: %d | Runtime: %d\n", current->process->name, current->process->priority, current->process->pid, current->process->runtime);
-        current = current->next;
+    //move pointer through the list until we print the last element
+    while (ptr != NULL) {
+        printf("Name: %s | Priority: %d | PID: %d | Runtime: %d\n", ptr->process->name, ptr->process->priority, ptr->process->pid, ptr->process->runtime);
+        ptr = ptr->next;
     }
 }
 
@@ -45,15 +42,23 @@ void print_list(node_t * head) {
 void push(proc_t * process) {
     //create a new link in the linked list
     node_t * link = (node_t*) malloc(sizeof(node_t));
+    node_t * ptr = head;
     
     //assign the process to the link
     link->process = process;
 
-    //make the link point to the current head
-    link->next = head;
+    //navigate to the end of the list
+     while (ptr != NULL) {
+        ptr = ptr->next;
+    }
 
-    //make the link the new head
-    head = link;
+    //make the current last link point to the new link being added
+    ptr->next = link;
+
+    //make the link point to NULL since its at the end of the list
+    link->next = NULL;
+
+    
     
 }
 

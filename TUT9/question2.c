@@ -9,6 +9,9 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
+	double t0, t1; // For timer
+	t0 = omp_get_wtime();
+
 	int nthreads = atoi(argv[1]); // String to int
 	#ifdef _OPENMP
 	omp_set_num_threads(nthreads);
@@ -24,6 +27,9 @@ int main(int argc, char *argv[]) {
 		x = i * dx;
 		y[i] = exp(x) * cos(x) * sin(x) * sqrt(5 * x + 6.0);
   }
+
+	t1 =  omp_get_wtime();
+	printf("Running time = %lf\n", (t1 - t0));
 
 	return 0;
 }

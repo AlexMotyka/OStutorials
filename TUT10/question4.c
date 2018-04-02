@@ -7,8 +7,8 @@
 // Define process 0 as MASTER
 #define MASTER 0
 
-#define DATA_SIZE 100000
-#define CHUNK_SIZE 10
+#define DATA_SIZE 100000 // Search space
+#define CHUNK_SIZE 1000 // Send size
 
 
 // Prime density function to get the number of primes expect to find in search space
